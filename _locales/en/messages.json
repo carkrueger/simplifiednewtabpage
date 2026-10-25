@@ -1,0 +1,50 @@
+{
+  "ext_name": {
+    "message": "Simplified NTP",
+    "description": "Extension name."
+  },
+  "ext_description": {
+    "message": "Cromite's Android Simplified New Tab Page: Bookmarks and Downloads shortcuts plus a grid of most visited sites.",
+    "description": "Extension description."
+  },
+  "page_title": {
+    "message": "New Tab",
+    "description": "Title of the new tab page."
+  },
+  "menu_bookmarks": {
+    "message": "Bookmarks",
+    "description": "Shortcut button that opens the bookmark manager."
+  },
+  "menu_downloads": {
+    "message": "Downloads",
+    "description": "Shortcut button that opens the downloads page."
+  },
+  "most_visited_placeholder_title": {
+    "message": "Nothing to see here… yet",
+    "description": "Header text shown on the new tab page when there are no most visited tiles yet."
+  },
+  "most_visited_placeholder_summary": {
+    "message": "Your most visited pages will appear here",
+    "description": "Explanation text shown on the new tab page when there are no most visited tiles yet."
+  },
+  "context_menu_open_in_new_tab": {
+    "message": "Open in new tab",
+    "description": "Tile context menu item."
+  },
+  "context_menu_open_in_new_window": {
+    "message": "Open in new window",
+    "description": "Tile context menu item."
+  },
+  "remove": {
+    "message": "Remove",
+    "description": "Tile context menu item that hides the site from the grid."
+  },
+  "most_visited_item_removed": {
+    "message": "This site won't be shown again",
+    "description": "Snackbar text shown after removing a tile."
+  },
+  "undo": {
+    "message": "Undo",
+    "description": "Snackbar action that restores a removed tile."
+  }
+}

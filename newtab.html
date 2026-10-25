@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title data-i18n="page_title">New Tab</title>
+  <link rel="stylesheet" href="newtab.css">
+</head>
+<body>
+  <main id="content">
+    <!-- ntp_shortcuts.xml -->
+    <div id="shortcuts">
+      <button type="button" id="bookmarks-button" class="shortcut">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        <span data-i18n="menu_bookmarks">Bookmarks</span>
+      </button>
+      <button type="button" id="downloads-button" class="shortcut">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        <span data-i18n="menu_downloads">Downloads</span>
+      </button>
+    </div>
+
+    <!-- mv_tiles_container.xml -->
+    <div id="tiles" role="list"></div>
+
+    <!-- new_tab_page_tile_grid_placeholder.xml -->
+    <div id="placeholder" hidden>
+      <img src="images/placeholder.png" alt="">
+      <div class="placeholder-title" data-i18n="most_visited_placeholder_title">Nothing to see here… yet</div>
+      <div class="placeholder-summary" data-i18n="most_visited_placeholder_summary">Your most visited pages will appear here</div>
+    </div>
+  </main>
+
+  <div id="context-menu" role="menu" hidden>
+    <button type="button" role="menuitem" data-action="new-tab" data-i18n="context_menu_open_in_new_tab">Open in new tab</button>
+    <button type="button" role="menuitem" data-action="new-window" data-i18n="context_menu_open_in_new_window">Open in new window</button>
+    <button type="button" role="menuitem" data-action="remove" data-i18n="remove">Remove</button>
+  </div>
+
+  <div id="snackbar" role="status" hidden>
+    <span data-i18n="most_visited_item_removed">This site won't be shown again</span>
+    <button type="button" id="snackbar-undo" data-i18n="undo">Undo</button>
+  </div>
+
+  <template id="tile-template">
+    <a class="tile" role="listitem" draggable="false">
+      <span class="tile-icon"><img alt="" draggable="false"></span>
+      <span class="tile-title"></span>
+    </a>
+  </template>
+
+  <script src="newtab.js"></script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+:root {
+  --bg: #ffffff;
+  --surface: #f1f3f4;
+  --surface-hover: #e8eaed;
+  --text: #202124;
+  --text-secondary: #5f6368;
+  --icon: #5f6368;
+  --fallback-icon-bg: #787878;
+  --menu-bg: #ffffff;
+  --menu-shadow: 0 2px 8px rgba(0, 0, 0, .25);
+  --snackbar-bg: #323232;
+  --snackbar-text: #ffffff;
+  --snackbar-action: #8ab4f8;
+  --focus: #1a73e8;
+  --placeholder-text: #757575;
+
+  /* Dimensions from the Android resources (1dp == 1px here). */
+  --tile-width: 72px;
+  --tile-vertical-spacing: 6px;   /* tile_grid_layout_vertical_spacing */
+  --tile-min-horizontal-spacing: 4px; /* tile_grid_layout_min_horizontal_spacing */
+  --tile-icon-size: 48px;
+  --favicon-size: 32px;
+  --content-max-width: 480px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #202124;
+    --surface: #303134;
+    --surface-hover: #3c4043;
+    --text: #e8eaed;
+    --text-secondary: #9aa0a6;
+    --icon: #9aa0a6;
+    --fallback-icon-bg: #5f6368;
+    --menu-bg: #303134;
+    --menu-shadow: 0 2px 8px rgba(0, 0, 0, .6);
+    --snackbar-bg: #e8eaed;
+    --snackbar-text: #202124;
+    --snackbar-action: #1a73e8;
+    --focus: #8ab4f8;
+    --placeholder-text: #9aa0a6;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+}
+
+#content {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 24px 16px 16px;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Shortcuts row: two equal-weight buttons. */
+#shortcuts {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.shortcut {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 4px 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.shortcut:hover {
+  background: var(--surface);
+}
+
+.shortcut svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--icon);
+}
+
+/* Tile grid. The number of columns and visible tiles is set from newtab.js. */
+#tiles {
+  display: grid;
+  grid-template-columns: repeat(var(--columns, 4), var(--tile-width));
+  justify-content: space-evenly;
+  row-gap: var(--tile-vertical-spacing);
+  column-gap: var(--tile-min-horizontal-spacing);
+}
+
+#tiles[hidden] {
+  display: none;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--tile-width);
+  padding: 8px 0 6px;
+  border-radius: 12px;
+  color: var(--text);
+  text-decoration: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.tile[hidden] {
+  display: none;
+}
+
+.tile:hover {
+  background: var(--surface);
+}
+
+.tile-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tile-icon-size);
+  height: var(--tile-icon-size);
+  border-radius: 50%;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.tile:hover .tile-icon {
+  background: var(--surface-hover);
+}
+
+.tile-icon img {
+  width: var(--favicon-size);
+  height: var(--favicon-size);
+}
+
+/* RoundedIconGenerator fallback: grey rounded square with the first letter. */
+.tile-icon.fallback {
+  background: var(--fallback-icon-bg);
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.tile-icon.fallback img {
+  display: none;
+}
+
+.tile-title {
+  width: 100%;
+  margin-top: 6px;
+  padding: 0 2px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+/* Empty state. */
+#placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  text-align: center;
+  color: var(--placeholder-text);
+}
+
+#placeholder[hidden] {
+  display: none;
+}
+
+#placeholder img {
+  width: 86px;
+  height: 86px;
+  margin-bottom: 15px;
+}
+
+@media (prefers-color-scheme: dark) {
+  #placeholder img {
+    filter: invert(1);
+    opacity: .6;
+  }
+}
+
+.placeholder-title {
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.placeholder-summary {
+  font-size: 12px;
+}
+
+/* Tile context menu. */
+#context-menu {
+  position: fixed;
+  z-index: 10;
+  min-width: 180px;
+  padding: 8px 0;
+  border-radius: 8px;
+  background: var(--menu-bg);
+  box-shadow: var(--menu-shadow);
+}
+
+#context-menu[hidden] {
+  display: none;
+}
+
+#context-menu button {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  border: 0;
+  background: transparent;
+  text-align: start;
+  cursor: pointer;
+}
+
+#context-menu button:hover,
+#context-menu button:focus-visible {
+  background: var(--surface);
+  outline: none;
+}
+
+/* Snackbar. */
+#snackbar {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  max-width: calc(100% - 32px);
+  padding: 6px 8px 6px 16px;
+  border-radius: 4px;
+  background: var(--snackbar-bg);
+  color: var(--snackbar-text);
+  box-shadow: var(--menu-shadow);
+  transform: translateX(-50%);
+}
+
+#snackbar[hidden] {
+  display: none;
+}
+
+#snackbar-undo {
+  padding: 8px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--snackbar-action);
+  font-weight: 500;
+  cursor: pointer;
+}
