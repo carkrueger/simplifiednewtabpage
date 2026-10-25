@@ -4,7 +4,30 @@ A standalone Manifest V3 extension that replaces the new tab page with a copy of
 Cromite's Android "Simplified NTP"
 (`build/patches/Restore-Simplified-NTP-launch.patch` in the Cromite repo).
 
-What it shows:
+## Install in Titanium Browser (Android)
+
+[Titanium](https://github.com/jqssun/android-titanium-browser) only installs
+extensions from websites when they come from the Chrome Web Store or the Opera
+or Edge add-on stores. Tapping the `.crx` on the release page just downloads
+it, so install it from the downloaded file instead:
+
+1. Download `simplified-ntp-<version>.crx` (or the `.zip`) from the
+   [latest release](https://github.com/carkrueger/simplifiednewtabpage/releases/latest).
+2. Open the menu, then **Extensions** → **Manage extensions**
+   (or go to `chrome://extensions`).
+3. Find **Titanium Extension**, tap **Details**, then **Extension options**.
+4. Install the downloaded file from the local file option on that page.
+5. Open a new tab.
+
+**Titanium Extension** is built into Titanium. If it isn't in your list, see
+[android-titanium-extension](https://github.com/jqssun/android-titanium-extension)
+for how to install it.
+
+Alternatively, unzip `simplified-ntp-<version>.zip`, then in
+`chrome://extensions` turn on **Developer mode**, tap **Load unpacked** and
+choose the unzipped folder.
+
+## What it shows
 
 - A **Bookmarks** / **Downloads** shortcut row (`ntp_shortcuts.xml`).
 - A grid of most-visited sites (`chrome.topSites`), laid out like
