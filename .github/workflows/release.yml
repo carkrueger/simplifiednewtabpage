@@ -1,0 +1,56 @@
+name: Release
+
+# Push a tag like v1.2.3 to build a signed .crx (plus a .zip for the Chrome Web
+# Store) and attach both to a GitHub release. The tag sets the manifest version.
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare extension
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          if ! [[ "$version" =~ ^[0-9]+(\.[0-9]+){0,3}$ ]]; then
+            echo "::error::Tag '$GITHUB_REF_NAME' is not a valid extension version (expected v1, v1.2, v1.2.3 or v1.2.3.4)"
+            exit 1
+          fi
+          mkdir -p build/ext dist
+          git archive HEAD | tar -x -C build/ext
+          rm -rf build/ext/.github
+          jq --arg v "$version" '.version = $v' manifest.json > build/ext/manifest.json
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+
+      - name: Pack extension
+        env:
+          CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
+        run: |
+          if [ -z "$CRX_PRIVATE_KEY" ]; then
+            echo "::error::The CRX_PRIVATE_KEY secret is not set (see README)"
+            exit 1
+          fi
+          key="$RUNNER_TEMP/key.pem"
+          (umask 077 && printf '%s\n' "$CRX_PRIVATE_KEY" > "$key")
+          npx --yes crx3@2.0.0 \
+            -p "$key" \
+            -o "dist/simplified-ntp-$VERSION.crx" \
+            -z "dist/simplified-ntp-$VERSION.zip" \
+            build/ext < /dev/null
+          rm -f "$key"
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/* \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes \
+            --verify-tag

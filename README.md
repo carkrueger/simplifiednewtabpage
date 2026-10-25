@@ -26,6 +26,35 @@ What it shows:
 2. Click **Load unpacked** and select this folder.
 3. Open a new tab.
 
+Packed builds are on the [Releases](../../releases) page:
+
+- `.crx`: drag it onto `chrome://extensions`. Browsers that block installing
+  extensions from outside the Web Store, such as Google Chrome, won't accept it.
+- `.zip`: unpack it and use **Load unpacked**, or upload it to the Chrome Web
+  Store.
+
+## Releasing
+
+Releases are built by [`.github/workflows/release.yml`](.github/workflows/release.yml).
+Pushing a tag such as `v1.2.3` sets that version in the manifest, packs the
+extension and publishes a GitHub release with the `.crx` and `.zip` attached.
+
+```sh
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+The `.crx` is signed with the RSA key in the `CRX_PRIVATE_KEY` repository
+secret. The key decides the extension ID, so keep using the same one. To
+create it once:
+
+```sh
+openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out key.pem
+gh secret set CRX_PRIVATE_KEY < key.pem
+```
+
+Keep `key.pem` somewhere safe outside the repository.
+
 ## Files
 
 | File | Purpose |
@@ -39,3 +68,11 @@ What it shows:
 Favicons come from the extension `_favicon` endpoint. When the browser only
 has its generic globe icon for a site, the tile shows a grey letter icon
 instead, like Chromium's fallback.
+
+## License
+
+[GPL-3.0](LICENSE). The page reproduces Cromite's
+`Restore-Simplified-NTP-launch.patch` (GPL-3.0-only), which is based on
+Chromium code under a BSD-style license. The grid layout is ported from
+`MostVisitedTilesGridLayout.java`, and the placeholder image and strings come
+from that patch.
