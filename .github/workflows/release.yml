@@ -14,7 +14,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
 
       - name: Prepare extension
         run: |
@@ -25,7 +25,7 @@ jobs:
           fi
           mkdir -p build/ext dist
           git archive HEAD | tar -x -C build/ext
-          rm -rf build/ext/.github
+          rm -rf build/ext/.github build/ext/.gitignore
           jq --arg v "$version" '.version = $v' manifest.json > build/ext/manifest.json
           echo "VERSION=$version" >> "$GITHUB_ENV"
 
