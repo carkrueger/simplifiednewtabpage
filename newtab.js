@@ -5,6 +5,8 @@
 // MostVisitedTilesGridLayout: never more than 4 columns. Unlike Android (fixed
 // 4 rows), rows are added until the viewport is filled with whole rows.
 const MAX_COLUMNS = 4;
+const MAX_TILES = 100;
+const HISTORY_SEARCH_SIZE = 1000;
 const SNACKBAR_DURATION_MS = 5000;
 const BLOCKED_KEY = 'blockedUrls';
 
@@ -122,10 +124,37 @@ function createTile(site) {
   return tile;
 }
 
+// chrome.topSites never returns more than 10 sites (history::kTopSitesNumber),
+// so the rest of the grid comes from the history: one URL per site, most
+// visited first, skipping the sites of excludedUrls.
+async function getHistorySites(excludedUrls) {
+  let items;
+  try {
+    items = await chrome.history.search(
+        {text: '', startTime: 0, maxResults: HISTORY_SEARCH_SIZE});
+  } catch {
+    // Not every browser provides chrome.history. Keep the top sites only.
+    return [];
+  }
+  const seenHosts = new Set(excludedUrls.map(displayHost));
+  items.sort((a, b) => b.visitCount - a.visitCount);
+  return items.filter((item) => {
+    const host = displayHost(item.url);
+    if (!isWebUrl(item.url) || seenHosts.has(host)) {
+      return false;
+    }
+    seenHosts.add(host);
+    return true;
+  });
+}
+
 async function render() {
   const sites = await chrome.topSites.get();
   const blocked = new Set(blockedUrls);
-  const visible = sites.filter((site) => !blocked.has(site.url));
+  const historySites =
+      await getHistorySites([...sites.map((site) => site.url), ...blockedUrls]);
+  const visible = [...sites.filter((site) => !blocked.has(site.url)), ...historySites]
+      .slice(0, MAX_TILES);
 
   tilesEl.replaceChildren(...visible.map(createTile));
   tilesEl.hidden = visible.length === 0;

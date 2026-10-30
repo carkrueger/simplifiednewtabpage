@@ -30,9 +30,12 @@ choose the unzipped folder.
 ## What it shows
 
 - A **Bookmarks** / **Downloads** shortcut row (`ntp_shortcuts.xml`).
-- A grid of most-visited sites (`chrome.topSites`), laid out like
+- A grid of most-visited sites, laid out like
   `MostVisitedTilesGridLayout.java`: at most 4 columns, with equal spacing
   between and around the tiles.
+  - `chrome.topSites` comes first, but it never returns more than 10 sites. The
+    rest of the grid is filled from `chrome.history`: one URL per site, most
+    visited first. Browsers without `chrome.history` show the top sites only.
   - **Difference from Android:** Android caps the grid at 4 rows. Here rows are
     added until the window is filled with whole rows, so no row is cut off and
     the page never scrolls.
@@ -82,7 +85,7 @@ Keep `key.pem` somewhere safe outside the repository.
 
 | File | Purpose |
 |---|---|
-| `manifest.json` | Overrides the new tab page; permissions `topSites`, `favicon`, `storage` |
+| `manifest.json` | Overrides the new tab page; permissions `topSites`, `history`, `favicon`, `storage` |
 | `newtab.html` / `newtab.css` | Page markup and styling (light and dark) |
 | `newtab.js` | Tiles, grid layout, context menu, removal with undo |
 | `_locales/en/messages.json` | Strings (taken from the Android string resources) |
